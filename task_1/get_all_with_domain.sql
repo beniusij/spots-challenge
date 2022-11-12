@@ -5,7 +5,7 @@ DECLARE
     spots "MY_TABLE";
 BEGIN
     FOR spots IN
-        SELECT * FROM "MY_TABLE" WHERE website IS NOT NULL
+        SELECT * FROM "MY_TABLE" WHERE array_length(regexp_matches(website, ''), 1) > 0
     LOOP
         RETURN NEXT spots;
     END LOOP;
