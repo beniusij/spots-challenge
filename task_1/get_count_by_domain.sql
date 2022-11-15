@@ -1,0 +1,1 @@
+SELECT website, count(website) as NUM FROM "MY_TABLE" GROUP BY website;
