@@ -10,3 +10,6 @@ start:
 make cleanup:
 	@docker stop spots
 	@docker rm spots
+
+make test:
+	@go test ./...
