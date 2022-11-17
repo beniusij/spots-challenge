@@ -1,0 +1,1 @@
+SELECT name, website, array_length(string_to_array(website, ','), 1) FROM "MY_TABLE" where website ~ '(:?www.)?((?:[a-z0-9-]+\.)+(?:[a-z]+))(?:\/)?';
