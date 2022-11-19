@@ -7,11 +7,13 @@ import (
 	"strconv"
 )
 
+type Response struct {
+	Status  string
+	Results []any
+}
+
 func GetSpotsByRadius(c *gin.Context) {
-	var resp struct {
-		Status  string
-		Results []map[string]any
-	}
+	var resp Response
 
 	if !validateQueryParams(c) {
 		return

@@ -1,12 +1,11 @@
 package spots_test
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/http/httptest"
 	spots "spotlas-challenge/spots"
-	"strings"
-
 	//"github.com/gin-gonic/gin"
 	"testing"
 )
@@ -36,20 +35,27 @@ func Test_GetSpotsByRadius(t *testing.T) {
 	})
 
 	t.Run("get valid json response", func(t *testing.T) {
+		var result spots.Response
 		r := initTestAPI()
 		request, _ := http.NewRequest(http.MethodGet, "/spots?latitude=10.0&longitude=10.0&radius=10&type=circle", nil)
 		response := httptest.NewRecorder()
 
 		r.ServeHTTP(response, request)
 
-		result := response.Body.String()
+		err := json.Unmarshal(response.Body.Bytes(), &result)
 
-		if !strings.Contains(result, "Status") {
-			t.Errorf("should contain %q, got %q", "Status", result)
+		if err != nil {
+			t.Errorf("response failed to parse back")
 		}
 
-		if !strings.Contains(result, "Results") {
-			t.Errorf("should contain %q, got %q", "Results", result)
+		expected := "ok"
+
+		if result.Status != expected {
+			t.Errorf("should contain %q, got %q", expected, result.Status)
 		}
+
+		//if len(result.Results) == 0 {
+		//	t.Errorf("should contain results, but is empty")
+		//}
 	})
 }
