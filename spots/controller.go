@@ -7,23 +7,25 @@ import (
 	"strconv"
 )
 
-type errorResponse struct {
-	message string
-	details []string
-}
-
 func GetSpotsByRadius(c *gin.Context) {
+	var resp struct {
+		Status  string
+		Results []map[string]any
+	}
+
 	if !validateQueryParams(c) {
 		return
 	}
+
+	resp.Status = "ok"
+	c.JSON(http.StatusOK, resp)
 }
 
 func validateQueryParams(c *gin.Context) bool {
 	var val string
-	var safe bool
 
+	safe := true
 	errJson := gin.H{"message": "Invalid payload"}
-
 	expectedParams := [4]string{"longitude", "latitude", "radius", "type"}
 	pattern := "([\\-0-1]{0,3}\\.?[0-9]{0,5})"
 
