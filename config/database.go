@@ -15,7 +15,7 @@ type DatabaseConfig struct {
 	Secure   string
 }
 
-var db *gorm.DB
+var Db *gorm.DB
 
 func InitDb() {
 	// TODO: implement the function
@@ -28,21 +28,27 @@ func InitTestDb() {
 		User:     "postgres",
 		Password: "VerySecurePassword",
 		Name:     "postgres",
-		Secure:   "false",
+		Secure:   "disable",
 	}
 
 	_ = setup(config)
 }
 
+func GetDb() *gorm.DB {
+	return Db
+}
+
 func setup(config DatabaseConfig) error {
+	var err error
+
 	creds := generateCreds(config)
-	db, err := gorm.Open("postgres", creds)
+	Db, err = gorm.Open("postgres", creds)
 
 	if err != nil {
 		return err
 	}
 
-	db.DB().SetMaxIdleConns(5)
+	Db.DB().SetMaxIdleConns(5)
 
 	return nil
 }
@@ -50,8 +56,4 @@ func setup(config DatabaseConfig) error {
 func generateCreds(config DatabaseConfig) string {
 	return fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
 		config.Host, config.Port, config.User, config.Name, config.Password, config.Secure)
-}
-
-func GetDb() *gorm.DB {
-	return db
 }
