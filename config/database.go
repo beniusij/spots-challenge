@@ -38,6 +38,10 @@ func GetDb() *gorm.DB {
 	return Db
 }
 
+func ResetDb() {
+	Db = nil
+}
+
 func setup(config DatabaseConfig) error {
 	var err error
 

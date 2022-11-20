@@ -9,6 +9,7 @@ import (
 
 func Test_GetSpotsInCircle(t *testing.T) {
 	t.Run("should return error if database connection is not available", func(t *testing.T) {
+		config.ResetDb()
 		_, err := spots.GetSpotsInCircle(10.0, 10.0, 10)
 
 		expected := "database is not available"
