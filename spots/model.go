@@ -15,7 +15,7 @@ type Spot struct {
 	Rating      float32
 }
 
-func GetSpotsInCircle(radius int, longitude float32, latitude float32) ([]Spot, error) {
+func GetSpotsInCircle(longitude float32, latitude float32, radius int) ([]Spot, error) {
 	var spots []Spot
 	db := config.GetDb()
 
@@ -23,7 +23,18 @@ func GetSpotsInCircle(radius int, longitude float32, latitude float32) ([]Spot, 
 		return nil, errors.New("database is not available")
 	}
 
-	query := fmt.Sprintf(`SELECT * FROM "MY_TABLE" LIMIT %d`, 10)
+	query := fmt.Sprintf(`
+		SELECT * FROM "MY_TABLE" s 
+		WHERE ST_DWithin(
+			s.coordinates::geography,
+			ST_MakePoint(%f,%f)::geography,
+			%d
+		)`,
+		longitude,
+		latitude,
+		radius,
+	)
+
 	db.Raw(query).Scan(&spots)
 
 	return spots, nil

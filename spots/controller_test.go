@@ -21,7 +21,7 @@ func initTestAPI() *gin.Engine {
 func Test_GetSpotsByRadius(t *testing.T) {
 	t.Run("rejects calls without expected parameters", func(t *testing.T) {
 		r := initTestAPI()
-		request, _ := http.NewRequest(http.MethodGet, "/spots?latitude=&longitude=&radius=&type=", nil)
+		request, _ := http.NewRequest(http.MethodGet, "/spots?longitude=&latitude=&radius=&type=", nil)
 		response := httptest.NewRecorder()
 
 		r.ServeHTTP(response, request)
@@ -37,7 +37,7 @@ func Test_GetSpotsByRadius(t *testing.T) {
 	t.Run("get valid json response", func(t *testing.T) {
 		var result spots.Response
 		r := initTestAPI()
-		request, _ := http.NewRequest(http.MethodGet, "/spots?latitude=10.0&longitude=10.0&radius=10&type=circle", nil)
+		request, _ := http.NewRequest(http.MethodGet, "/spots?longitude=10.0&latitude=10.0&radius=10&type=circle", nil)
 		response := httptest.NewRecorder()
 
 		r.ServeHTTP(response, request)

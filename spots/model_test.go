@@ -11,7 +11,7 @@ func Test_GetSpotsInCircle(t *testing.T) {
 	config.InitTestDb()
 
 	t.Run("should return error if database connection is not available", func(t *testing.T) {
-		_, err := spots.GetSpotsInCircle(10, 10.0, 10.0)
+		_, err := spots.GetSpotsInCircle(10.0, 10.0, 10)
 
 		expected := "database is not available"
 		if err.Error() != expected {
@@ -20,7 +20,9 @@ func Test_GetSpotsInCircle(t *testing.T) {
 	})
 
 	t.Run("should return array of Spots", func(t *testing.T) {
-		results, err := spots.GetSpotsInCircle(10, 10.0, 10.0)
+		results, err := spots.GetSpotsInCircle(-8.473656, 51.899216, 100)
+		// lat, long
+		// 51.899216,-8.473656
 
 		if err != nil {
 			t.Errorf(err.Error())
