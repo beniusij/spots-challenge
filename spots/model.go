@@ -15,7 +15,7 @@ type Spot struct {
 	Rating      float32
 }
 
-func GetSpotsInCircle(longitude float64, latitude float64, radius int) ([]Spot, error) {
+func GetSpotsInCircle(long float64, lat float64, r int) ([]Spot, error) {
 	var spots []Spot
 	db := config.GetDb()
 
@@ -24,15 +24,19 @@ func GetSpotsInCircle(longitude float64, latitude float64, radius int) ([]Spot, 
 	}
 
 	query := fmt.Sprintf(`
-		SELECT * FROM "MY_TABLE" s 
-		WHERE ST_DWithin(
-			s.coordinates::geography,
-			ST_MakePoint(%f,%f)::geography,
-			%d
-		)`,
-		longitude,
-		latitude,
-		radius,
+		SELECT *
+		FROM "MY_TABLE" s
+		WHERE ST_DWithin(s.coordinates::geography,ST_MakePoint(%f,%f)::geography,%d)
+		ORDER BY
+			CASE
+				WHEN ST_Distance(s.coordinates::geography,ST_MakePoint(%f,%f)::geography) <= 50 THEN s.rating
+				ELSE ST_Distance(s.coordinates::geography,ST_MakePoint(%f,%f)::geography)
+			END;
+		`,
+		long, lat,
+		r,
+		long, lat,
+		long, lat,
 	)
 
 	db.Raw(query).Scan(&spots)
@@ -40,7 +44,7 @@ func GetSpotsInCircle(longitude float64, latitude float64, radius int) ([]Spot, 
 	return spots, nil
 }
 
-func GetSpotsInSquare(longitude float64, latitude float64, radius int) ([]Spot, error) {
+func GetSpotsInSquare(long float64, lat float64, r int) ([]Spot, error) {
 	var spots []Spot
 	db := config.GetDb()
 
