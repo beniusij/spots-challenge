@@ -7,11 +7,11 @@ import (
 	"testing"
 )
 
-func Test_GetSpotsInSquare(t *testing.T) {
+func Test_GetSpotsInCircle(t *testing.T) {
 	config.InitTestDb()
 
 	t.Run("should return error if database connection is not available", func(t *testing.T) {
-		_, err := spots.GetSpotsInSquare(10, 10.0, 10.0)
+		_, err := spots.GetSpotsInCircle(10, 10.0, 10.0)
 
 		expected := "database is not available"
 		if err.Error() != expected {
@@ -20,7 +20,7 @@ func Test_GetSpotsInSquare(t *testing.T) {
 	})
 
 	t.Run("should return array of Spots", func(t *testing.T) {
-		results, err := spots.GetSpotsInSquare(10, 10.0, 10.0)
+		results, err := spots.GetSpotsInCircle(10, 10.0, 10.0)
 
 		if err != nil {
 			t.Errorf(err.Error())
