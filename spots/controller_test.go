@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/http/httptest"
+	"spotlas-challenge/config"
 	spots "spotlas-challenge/spots"
 	//"github.com/gin-gonic/gin"
 	"testing"
@@ -19,6 +20,8 @@ func initTestAPI() *gin.Engine {
 }
 
 func Test_GetSpotsByRadius(t *testing.T) {
+	config.InitTestDb()
+
 	t.Run("rejects calls without expected parameters", func(t *testing.T) {
 		r := initTestAPI()
 		request, _ := http.NewRequest(http.MethodGet, "/spots?longitude=&latitude=&radius=&type=", nil)
@@ -34,10 +37,10 @@ func Test_GetSpotsByRadius(t *testing.T) {
 		}
 	})
 
-	t.Run("get valid json response", func(t *testing.T) {
+	t.Run("get valid json response for circle", func(t *testing.T) {
 		var result spots.Response
 		r := initTestAPI()
-		request, _ := http.NewRequest(http.MethodGet, "/spots?longitude=10.0&latitude=10.0&radius=10&type=circle", nil)
+		request, _ := http.NewRequest(http.MethodGet, "/spots?longitude=-8.473656&latitude=51.899216&radius=100&type=circle", nil)
 		response := httptest.NewRecorder()
 
 		r.ServeHTTP(response, request)
@@ -54,8 +57,8 @@ func Test_GetSpotsByRadius(t *testing.T) {
 			t.Errorf("should contain %q, got %q", expected, result.Status)
 		}
 
-		//if len(result.Results) == 0 {
-		//	t.Errorf("should contain results, but is empty")
-		//}
+		if len(result.Results) == 0 {
+			t.Errorf("should contain results, but is empty")
+		}
 	})
 }

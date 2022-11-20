@@ -15,7 +15,7 @@ type Spot struct {
 	Rating      float32
 }
 
-func GetSpotsInCircle(longitude float32, latitude float32, radius int) ([]Spot, error) {
+func GetSpotsInCircle(longitude float64, latitude float64, radius int) ([]Spot, error) {
 	var spots []Spot
 	db := config.GetDb()
 
