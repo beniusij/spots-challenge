@@ -35,6 +35,12 @@ func GetSpotsByRadius(c *gin.Context) {
 			abortRequest(c, err)
 			return
 		}
+	case "square":
+		resp.Results, err = GetSpotsInSquare(longitude, latitude, radius)
+		if err != nil {
+			abortRequest(c, err)
+			return
+		}
 	}
 
 	resp.Status = "ok"

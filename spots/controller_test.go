@@ -65,7 +65,30 @@ func Test_GetSpotsByRadius(t *testing.T) {
 		r.ServeHTTP(response, request)
 
 		err := json.Unmarshal(response.Body.Bytes(), &result)
+		if err != nil {
+			t.Errorf("response failed to parse back")
+		}
 
+		expected := "ok"
+
+		if result.Status != expected {
+			t.Errorf("should contain %q, got %q", expected, result.Status)
+		}
+
+		if len(result.Results) == 0 {
+			t.Errorf("should contain results, but is empty")
+		}
+	})
+
+	t.Run("get valid json response for square", func(t *testing.T) {
+		var result spots.Response
+		r := initTestAPI()
+		request, _ := http.NewRequest(http.MethodGet, "/spots?longitude=-8.473656&latitude=51.899216&radius=100&type=square", nil)
+		response := httptest.NewRecorder()
+
+		r.ServeHTTP(response, request)
+
+		err := json.Unmarshal(response.Body.Bytes(), &result)
 		if err != nil {
 			t.Errorf("response failed to parse back")
 		}

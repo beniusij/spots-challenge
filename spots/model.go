@@ -39,3 +39,14 @@ func GetSpotsInCircle(longitude float64, latitude float64, radius int) ([]Spot, 
 
 	return spots, nil
 }
+
+func GetSpotsInSquare(longitude float64, latitude float64, radius int) ([]Spot, error) {
+	var spots []Spot
+	db := config.GetDb()
+
+	if db == nil {
+		return nil, errors.New("database is not available")
+	}
+
+	return spots, nil
+}
