@@ -18,7 +18,16 @@ type DatabaseConfig struct {
 var Db *gorm.DB
 
 func InitDb() {
-	// TODO: implement the function
+	config := DatabaseConfig{
+		Host:     "localhost",
+		Port:     "5432",
+		User:     "postgres",
+		Password: "complexpassword",
+		Name:     "postgres",
+		Secure:   "disable",
+	}
+
+	_ = setup(config)
 }
 
 func InitTestDb() {
