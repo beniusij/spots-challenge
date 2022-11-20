@@ -22,7 +22,26 @@ func initTestAPI() *gin.Engine {
 func Test_GetSpotsByRadius(t *testing.T) {
 	config.InitTestDb()
 
-	t.Run("rejects calls without expected parameters", func(t *testing.T) {
+	t.Run("should reject calls without expected parameters", func(t *testing.T) {
+		r := initTestAPI()
+		request, _ := http.NewRequest(http.MethodGet, "/spots", nil)
+		response := httptest.NewRecorder()
+
+		r.ServeHTTP(response, request)
+
+		got := response.Body.String()
+		want := "{\"message\":\"Invalid payload\"}"
+
+		if got != want {
+			t.Errorf("got %q, want %q", got, want)
+		}
+
+		if response.Code != http.StatusNotAcceptable {
+			t.Errorf("got %q, want %q", response.Code, http.StatusNotAcceptable)
+		}
+	})
+
+	t.Run("should reject calls with invalid parameter values", func(t *testing.T) {
 		r := initTestAPI()
 		request, _ := http.NewRequest(http.MethodGet, "/spots?longitude=&latitude=&radius=&type=", nil)
 		response := httptest.NewRecorder()
