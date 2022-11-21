@@ -12,7 +12,7 @@ test-db:
 		-p 5433:5432 \
 		-e POSTGRES_PASSWORD=VerySecurePassword \
 		postgis/postgis
-		@docker cp ./docker-entrypoint-initdb.d/spots.sql spots_test:/docker-entrypoint-initdb.d/spots.sql
+	@docker cp ./docker-entrypoint-initdb.d/spots.sql spots_test:/docker-entrypoint-initdb.d/spots.sql
 
 
 cleanup:
