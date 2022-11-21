@@ -36,21 +36,19 @@ To test solution to the second challenge, perform following steps:
 
 1. After downloading the project, `cd` into the project's directory
 2. `make start-db`
-3. `docker exec -it spots bash`
-4. `psql -U postgres -W < /docker-entrypoint-initdb.d/spots.sql` (for password, enter `complexpassword`)
-5. Exit container with `exit`
-6. Start microservice with `go run main.go`
+3. Start microservice with `go run main.go`
+
+**Note:** You might need to wait ~10 seconds after container startup for it to finish importing data.
 
 To test the endpoint, run following command in the terminal:
 ```
-curl -H curl "localhost:3000/spots?longitude=-8.473656&latitude=51.899216&radius=100&type=circle"
+curl "localhost:3000/spots?longitude=-8.473656&latitude=51.899216&radius=100&type=circle"
 ```
 **Disclaimer**: Implementation for querying spots in square area is incomplete, thus results may be inaccurate or incomplete. 
 
 To run tests, follow these steps inside project's directory:
 
 1. `make test-db`
-2. `docker exec -it spots_test bash`
-3. `psql -U postgres -W < /docker-entrypoint-initdb.d/spots.sql` (for password, enter `complexpassword`)
-4. Exit container with `exit`
-5. Run `make test`
+2. Run `make test`
+   
+**Note:** You might need to wait ~10 seconds after container startup for it to finish importing data.
