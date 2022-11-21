@@ -20,7 +20,7 @@ func Test_GetSpotsInCircle(t *testing.T) {
 
 	t.Run("should return array of Spots", func(t *testing.T) {
 		config.InitTestDb()
-		results, err := spots.GetSpotsInCircle(-8.473656, 51.899216, 100)
+		results, err := spots.GetSpotsInCircle(-0.1387165, 51.5125127, 100)
 
 		if err != nil {
 			t.Errorf(err.Error())
@@ -32,6 +32,10 @@ func Test_GetSpotsInCircle(t *testing.T) {
 
 		if reflect.TypeOf(results[0]) != reflect.TypeOf(spots.Spot{}) {
 			t.Errorf("expected type to be Spot, got %q", reflect.TypeOf(results[0]))
+		}
+
+		if results[0].Rating > results[1].Rating {
+			t.Errorf("expected to be sorted in descending order by rating when distance <50 meters")
 		}
 	})
 }
@@ -49,7 +53,7 @@ func Test_GetSpotsInSquare(t *testing.T) {
 
 	t.Run("should return array of Spots", func(t *testing.T) {
 		config.InitTestDb()
-		results, err := spots.GetSpotsInSquare(-8.473656, 51.899216, 100)
+		results, err := spots.GetSpotsInSquare(-0.1387165, 51.5125127, 100)
 
 		if err != nil {
 			t.Errorf(err.Error())
@@ -63,6 +67,8 @@ func Test_GetSpotsInSquare(t *testing.T) {
 			t.Errorf("expected type to be Spot, got %q", reflect.TypeOf(results[0]))
 		}
 
-		// would be good to assert if spots where in square area
+		if results[0].Rating > results[1].Rating {
+			t.Errorf("expected to be sorted in descending order by rating when distance <50 meters")
+		}
 	})
 }

@@ -52,5 +52,21 @@ func GetSpotsInSquare(long float64, lat float64, r int) ([]Spot, error) {
 		return nil, errors.New("database is not available")
 	}
 
+	// TODO update query to find spots from square area
+	query := fmt.Sprintf(`
+		SELECT *
+		FROM "MY_TABLE" s
+		ORDER BY
+			CASE
+				WHEN ST_Distance(s.coordinates::geography,ST_MakePoint(%f,%f)::geography) <= 50 THEN s.rating
+				ELSE ST_Distance(s.coordinates::geography,ST_MakePoint(%f,%f)::geography)
+			END;
+		`,
+		long, lat,
+		long, lat,
+	)
+
+	db.Raw(query).Scan(&spots)
+
 	return spots, nil
 }
