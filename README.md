@@ -27,6 +27,11 @@ Although the task is short, clean code and a good project structure is still ver
   - If distance between two spots is smaller than 50m, then order by rating.
 4. Endpoint should return an array of objects containing all fields in the data set.
 
+## Prerequisite
+
+Docker Engine 
+Go v1.13
+
 ## Getting Started
 
 To test solutions to the first challenge, import each query and function into database containing "MY_TABLE" table 
@@ -35,7 +40,7 @@ and proceed executing each query or function.
 To test solution to the second challenge, perform following steps:
 
 1. After downloading the project, `cd` into the project's directory
-2. `make start-db`
+2. Start Docker if you haven't  already and run following command once that's ready: `make start-db`
 3. Start microservice with `go run main.go`
 
 **Note:** You might need to wait ~10 seconds after container startup for it to finish importing data.
@@ -46,9 +51,14 @@ curl "localhost:3000/spots?longitude=-8.473656&latitude=51.899216&radius=100&typ
 ```
 **Disclaimer**: Implementation for querying spots in square area is incomplete, thus results may be inaccurate or incomplete. 
 
-To run tests, follow these steps inside project's directory:
+To run tests, follow these steps inside project's directory with Docker running in the background:
 
 1. `make test-db`
 2. Run `make test`
    
 **Note:** You might need to wait ~10 seconds after container startup for it to finish importing data.
+
+Once you have finished testing the solution and which to finish, run cleanup command to stop and remove Docker containers:
+```
+make cleanup
+```
